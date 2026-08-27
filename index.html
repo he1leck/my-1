@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Мой Помощник</title>
+<link rel="manifest" href="manifest.json" />
+<meta name="theme-color" content="#1a1a2e" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #0f0f1a;
+    color: #eee;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  header {
+    padding: 16px 20px;
+    background: #1a1a2e;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid #2a2a40;
+  }
+  header .dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: #4fd1c5;
+    box-shadow: 0 0 8px #4fd1c5;
+  }
+  header h1 { font-size: 17px; font-weight: 600; }
+  header .status { font-size: 12px; color: #888; margin-left: auto; }
+
+  #chat {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .msg {
+    max-width: 78%;
+    padding: 10px 14px;
+    border-radius: 16px;
+    font-size: 15px;
+    line-height: 1.45;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  .msg.user {
+    align-self: flex-end;
+    background: #4f6ef7;
+    color: white;
+    border-bottom-right-radius: 4px;
+  }
+  .msg.bot {
+    align-self: flex-start;
+    background: #23233a;
+    border-bottom-left-radius: 4px;
+  }
+  .msg.system {
+    align-self: center;
+    background: transparent;
+    color: #666;
+    font-size: 12px;
+  }
+
+  .quick-actions {
+    display: flex;
+    gap: 8px;
+    padding: 0 16px 8px;
+    overflow-x: auto;
+  }
+  .quick-actions button {
+    flex-shrink: 0;
+    background: #23233a;
+    border: 1px solid #33334f;
+    color: #ccc;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  .quick-actions button:active { background: #33334f; }
+
+  footer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+    background: #1a1a2e;
+    border-top: 1px solid #2a2a40;
+  }
+  #inp {
+    flex: 1;
+    background: #23233a;
+    border: 1px solid #33334f;
+    color: #eee;
+    padding: 10px 14px;
+    border-radius: 20px;
+    font-size: 15px;
+    outline: none;
+  }
+  button.icon-btn {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    border: none;
+    background: #33334f;
+    color: #eee;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  button.icon-btn.active {
+    background: #e74c3c;
+    animation: pulse 1.2s infinite;
+  }
+  button.icon-btn.send {
+    background: #4f6ef7;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(231,76,60,0.5); }
+    70% { box-shadow: 0 0 0 10px rgba(231,76,60,0); }
+    100% { box-shadow: 0 0 0 0 rgba(231,76,60,0); }
+  }
+  #apikey-bar {
+    padding: 10px 16px;
+    background: #2a1a1a;
+    font-size: 13px;
+    color: #f0a;
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="dot"></div>
+  <h1>Мой Помощник</h1>
+  <div class="status" id="status">готов</div>
+</header>
+
+<div id="apikey-bar"></div>
+
+<div class="quick-actions">
+  <button data-cmd="погода">🌤 Погода</button>
+  <button data-cmd="таймер на 5 минут">⏱ Таймер 5 мин</button>
+  <button data-cmd="сколько времени">🕒 Время</button>
+  <button data-cmd="расскажи анекдот">😄 Анекдот</button>
+</div>
+
+<div id="chat"></div>
+
+<footer>
+  <button class="icon-btn" id="mic">🎤</button>
+  <input id="inp" type="text" placeholder="Напиши или скажи что-нибудь..." />
+  <button class="icon-btn send" id="send">➤</button>
+</footer>
+
+<audio id="beep" preload="auto"></audio>
+
+<script src="app.js"></script>
+</body>
+</html>
